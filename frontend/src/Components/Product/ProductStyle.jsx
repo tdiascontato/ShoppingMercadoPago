@@ -35,3 +35,18 @@ export const CardProduct = styled.div`
     }
 `;
 
+export const CardCreate = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: 5vh auto;
+    font-size: large;
+    background-color: beige;
+    width: 50%;
+    border-radius: 20px;
+    input, button{
+        margin: 0.5vh auto;
+    }
+`;

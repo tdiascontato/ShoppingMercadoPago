@@ -1,19 +1,24 @@
-
+require("dotenv/config");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const mercadopago = require("mercadopago");
-
+const connectDB = require('./database.js');
+const ItemController = require('./controllers/ItemController.js');
+connectDB();
 app.use(express.json());
 app.use(cors());
 
-//Chave privada vendedor
+//Chave DE ACESSO vendedor
 mercadopago.configure({
-    access_token: "TEST-3145117132343180-091613-d0cadff189a74b3f6fb465ef29641e76-1482597424",
+    access_token: process.env.ACCESS_TOKEN,
 });
 
 //routes
-app.get("/", (req, res)=> res.send("Lest's go?"));
+// Adicione esta rota para exclusão de itens
+app.delete("/deleteitem/:id", ItemController.destroy);
+app.get("/loaditems", ItemController.index);
+app.post("/createitem", ItemController.create);
 app.post("/createorder", (req, res) => {
     //Mandando para API
     let preference = {
@@ -45,7 +50,8 @@ app.post("/createorder", (req, res) => {
 });
 
 
+
 //Canal Servidor
-app.listen(4004, () => {
-    console.log(`Estamos rodando em http://localhost:4004/`);
+app.listen(process.env.PORT, () => {
+    console.log(`Estamos rodando em http://localhost:${process.env.PORT}/`);
   });
