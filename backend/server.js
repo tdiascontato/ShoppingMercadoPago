@@ -5,6 +5,7 @@ const cors = require("cors");
 const mercadopago = require("mercadopago");
 const connectDB = require('./database.js');
 const ItemController = require('./controllers/ItemController.js');
+const UserController = require("./controllers/UserController");
 connectDB();
 app.use(express.json());
 app.use(cors());
@@ -15,9 +16,11 @@ mercadopago.configure({
 });
 
 //routes
-// Adicione esta rota para exclusão de itens
+app.put("/updateitem/:id", ItemController.update);
 app.delete("/deleteitem/:id", ItemController.destroy);
 app.get("/loaditems", ItemController.index);
+app.post("/login", UserController.login);
+app.post("/cadastro", UserController.createUser);
 app.post("/createitem", ItemController.create);
 app.post("/createorder", (req, res) => {
     //Mandando para API

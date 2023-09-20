@@ -32,11 +32,14 @@ class ItemController {
       const item = await Item.findById(id);
 
       if (!item) {
-        return res.status(404).json();
+        return res.status(404).json({ Error: 'Item não encontrado update controller.' });
       }
 
-      await item.updateOne({ code, price });
-      return res.status(200).json();
+      item.code = code;
+      item.price = price;
+      await item.save();
+  
+      return res.status(200).json({ Message: 'Item atualizado com sucesso.' });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ Error: 'Internal server error.' });
