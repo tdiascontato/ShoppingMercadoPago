@@ -10,6 +10,7 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 
+
 //Chave DE ACESSO vendedor
 mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN,

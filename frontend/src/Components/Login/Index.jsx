@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { ButtonStyle, ContainerStyle, InputStyle, LabelStyle, LinkStyle, LoginContainerStyle, TitleStyle } from "./IndexStyle";
 
 export const Login = () => {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: "",
     senha: "",
@@ -12,102 +14,55 @@ export const Login = () => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
-  const navigate = useNavigate();
+
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:4004/login", userData);
       if (response.data.success) {
         alert("Login successful!");
+        window.localStorage.setItem("token", response.data);
+        window.localStorage.setItem("loggedIn", true);
         navigate("/product");
       } else {
         alert("Invalid credentials. Please try again.");
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("Error during login. Please try again later.");
+      console.error("Error login:", error);
+      alert("Erro durante o login! Verifique as entradas!");
     }
   };
 
-  // Inline styles for the components
-  const containerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-  };
-
-  const loginContainerStyle = {
-    backgroundColor: "#fff",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-    textAlign: "center",
-    maxWidth: "400px",
-    width: "100%",
-  };
-
-  const titleStyle = {
-    fontSize: "24px",
-  };
-
-  const labelStyle = {
-    display: "block",
-    fontSize: "16px",
-    fontWeight: "bold",
-  };
-
-  const inputStyle = {
-    width: "100%",
-    padding: "8px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  };
-
-  const buttonStyle = {
-    backgroundColor: "#007bff",
-    color: "#fff",
-    padding: "10px 20px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "bold",
-  };
-
-  const linkStyle = {
-    display: "block",
-    marginTop: "10px",
-    textDecoration: "none",
-    color: "#007bff",
-  };
+  // Verifique o status de login quando o componente for montado
+  useEffect(() => {
+    const isLoggedIn = window.localStorage.getItem("loggedIn");
+    if (isLoggedIn === "true") {
+      navigate("/product");
+    }
+  }, [navigate]);
 
   return (
-    <div style={containerStyle}>
-      <div style={loginContainerStyle}>
-        <h1 style={titleStyle}>Login</h1>
-        <label style={labelStyle}>Email:</label>
-        <input
-          style={inputStyle}
+    <ContainerStyle>
+      <LoginContainerStyle>
+        <TitleStyle>Login</TitleStyle>
+        <LabelStyle>Email:</LabelStyle>
+        <InputStyle
           type="text"
           name="email"
           value={userData.email}
           onChange={handleInputChange}
         />
-        <label style={labelStyle}>Password:</label>
-        <input
-          style={inputStyle}
+        <LabelStyle>Password:</LabelStyle>
+        <InputStyle
           type="password"
           name="senha"
           value={userData.senha}
           onChange={handleInputChange}
         />
-        <button style={buttonStyle} onClick={handleLogin}>
-          Login
-        </button>
-        <Link to="/cadastro" style={linkStyle}>
-          Create an account
+        <ButtonStyle onClick={handleLogin}>Login</ButtonStyle>
+        <Link to="/cadastro">
+          <LinkStyle>Create an account</LinkStyle>
         </Link>
-      </div>
-    </div>
+      </LoginContainerStyle>
+    </ContainerStyle>
   );
 };

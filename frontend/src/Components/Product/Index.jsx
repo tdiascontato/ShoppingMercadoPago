@@ -105,6 +105,13 @@ export const Product = () => {
     }
   };
 
+  //logout
+  const logOut = () => {
+    window.localStorage.clear();
+    window.location.href = "/";
+  };
+  
+
   return (
     <Container>
       {items.length > 0 && (
@@ -198,6 +205,9 @@ export const Product = () => {
         )}
       <Link to="/product">Produtos</Link>
       <Link to="/cadastro">Cadastro</Link>
+      <button onClick={logOut}>
+          Log Out
+        </button>
       </CardCreate>
     </Container>
   );
