@@ -22,7 +22,7 @@ export const Login = () => {
         alert("Login successful!");
         window.localStorage.setItem("token", response.data);
         window.localStorage.setItem("loggedIn", true);
-        navigate("/product");
+        navigate("/dashboard");
       } else {
         alert("Invalid credentials. Please try again.");
       }
@@ -36,7 +36,7 @@ export const Login = () => {
   useEffect(() => {
     const isLoggedIn = window.localStorage.getItem("loggedIn");
     if (isLoggedIn === "true") {
-      navigate("/product");
+      navigate("/dashboard");
     }
   }, [navigate]);
 

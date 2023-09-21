@@ -16,7 +16,7 @@ export const AppStylus = styled.main`
         transition: 1s ease;
     }
     .dark.Description{
-        color: #ffdc73; //eabf3e; //ffe561;
+        color: #ffdc73; 
         transition: 1s ease;
     }
 `;

@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Navigate, RouterProvider, } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { App } from './Components/App/Index';
-import { Product } from './Components/Product/Index';
 import { Item } from './Components/Item'
 import { Cadastro } from './Components/Cadastro/Index';
 import { Login } from './Components/Login/Index';
 import { ErrorPage } from './Components/ErrorPage/Index';
+import { Home } from './Components/Home/Index';
+import { Dashboard } from './Components/Dashboard/Index';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -25,8 +26,16 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/product', 
-        element: <Product />, 
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: '/Home', 
+        element: <Home/>, 
+      },
+      {
+        path: '/dashboard', 
+        element: <Dashboard />, 
       },
       {
         path: '/item', 
@@ -34,7 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/login', 
-        element: isLoggedIn ? <Navigate to="/product" /> : <Login />, 
+        element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />, 
       },
       {
         path: '/cadastro', 

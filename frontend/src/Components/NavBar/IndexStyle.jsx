@@ -11,7 +11,7 @@ export const Logo = styled.h1`
     text-align: left;
     font-weight: bold;
 `;
-export const Theme = styled.button`
+export const Button = styled.button`
  border-radius: 20px;
  color: white;
  font-size: 1rem;

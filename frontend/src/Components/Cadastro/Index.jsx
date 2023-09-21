@@ -82,7 +82,7 @@ export const Cadastro = () => {
         />
         <Button onClick={handleCadastro}>Cadastrar</Button>
         <Link to="/">Clique para Login!</Link>
-        <Link to="/product">Produtos</Link>
+        <Link to="/dashboard">Dashboard</Link>
       </LoginContainer>
     </Container>
   );

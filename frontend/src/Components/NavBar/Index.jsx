@@ -1,8 +1,14 @@
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Container, Logo, Side, Theme } from './IndexStyle';
+import { Container, Logo, Side, Button } from './IndexStyle';
 
 export const NavBar = ({modeScreen},received) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(window.localStorage.getItem("loggedIn"));
+    useEffect(() => {
+        // Atualiza o valor de isLoggedIn com o valor no localStorage quando o componente for montado.
+        setIsLoggedIn(window.localStorage.getItem("loggedIn"));
+      }, []);
     return(
         <Container>
             
@@ -13,18 +19,18 @@ export const NavBar = ({modeScreen},received) => {
                 </Link>   
             
             <Side>
-                <Theme onClick={modeScreen} >
+                <Button onClick={modeScreen} >
                     { received=== "light" ? "Mode Dark" : "Mode Light"}
-                </Theme>
+                </Button>
                 <Link to="/login">
-                    <Theme>
-                        Login
-                    </Theme>
+                    <Button>
+                        {isLoggedIn ? "Dashboard" : "Login"}
+                    </Button>
                 </Link>
                 <Link to="/cadastro">
-                    <Theme>
+                    <Button>
                         Cadastro
-                    </Theme>
+                    </Button>
                 </Link>
             </Side>
 
