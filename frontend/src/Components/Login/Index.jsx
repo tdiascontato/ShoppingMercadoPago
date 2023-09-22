@@ -42,7 +42,7 @@ export const Login = () => {
 
   return (
     <ContainerStyle>
-      <LoginContainerStyle>
+      <LoginContainerStyle className="Card">
         <TitleStyle>Login</TitleStyle>
         <LabelStyle>Email:</LabelStyle>
         <InputStyle

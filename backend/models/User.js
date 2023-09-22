@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
   email: String,
   celular: String,
   senha: String,
+  facebook: String,
+  instagram: String,
 });
 
 module.exports = mongoose.model("User", userSchema);

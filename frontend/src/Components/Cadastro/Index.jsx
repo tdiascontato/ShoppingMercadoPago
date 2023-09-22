@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 import {
   Button,
@@ -18,6 +17,8 @@ export const Cadastro = () => {
     celular: "",
     senha: "",
     senhaRepetida: "",
+    facebook: "",
+    instagram: "",
   });
 
   const handleInputChange = (e) => {
@@ -30,8 +31,7 @@ export const Cadastro = () => {
       const response = await axios.post("http://localhost:4004/cadastro", userData);
       if (response.data.success) {
         alert("Cadastro realizado com sucesso!");
-        // Use window.location.href to navigate to the login page
-        window.location.href = "/";
+        window.location.href = "/login";
       } else {
         alert("Erro ao cadastrar. Verifique os dados e tente novamente.");
       }
@@ -43,7 +43,7 @@ export const Cadastro = () => {
 
   return (
     <Container>
-      <LoginContainer>
+      <LoginContainer className="Card">
         <Titleh1>Faça seu cadastro</Titleh1>
         <Label>Digite seu usuário:</Label>
         <Input
@@ -80,9 +80,23 @@ export const Cadastro = () => {
           value={userData.senhaRepetida}
           onChange={handleInputChange}
         />
+        <Label>Dgite seu Facebook:</Label>
+        <Input
+          type="text"
+          name="facebook"
+          value={userData.facebook}
+          onChange={handleInputChange}
+        />
+        <Label>Repita seu Instagram:</Label>
+        <Input
+          type="text"
+          name="instagram"
+          value={userData.instagram}
+          onChange={handleInputChange}
+        />
+
         <Button onClick={handleCadastro}>Cadastrar</Button>
-        <Link to="/">Clique para Login!</Link>
-        <Link to="/dashboard">Dashboard</Link>
+
       </LoginContainer>
     </Container>
   );

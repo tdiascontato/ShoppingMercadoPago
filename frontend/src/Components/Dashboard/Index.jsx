@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { initMercadoPago } from '@mercadopago/sdk-react';
-import { Container, CardCreate, CardItem,} from './IndexStyle';
+import { Container, CardCreate, CardItem, Form, HTwo, Label, Input, Button, Img, HThree, Ul, Li, SecondButton, Pe} from './IndexStyle';
 import img from '../../img/613480.jpg';
 
 export const Dashboard = () => {
@@ -16,7 +16,7 @@ export const Dashboard = () => {
   const [editedPrice, setEditedPrice] = useState('');
   const [showEditDelete, setShowEditDelete] = useState(false);
 
-  useEffect(() => {
+  useEffect(() => { 
     loadItems();
   }, []);
 
@@ -86,83 +86,75 @@ export const Dashboard = () => {
   return (
     <Container>
 
-      <CardCreate>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <h2>Criar Itens</h2>
-            <label>Código:</label>
-            <br />
-            <input
+      <CardCreate className='Card'>
+        <Form onSubmit={handleSubmit}>
+            <HTwo>Criar Itens</HTwo>
+            <Label>Código:</Label>
+            <Input
               type="text"
               name="namecode"
-              placeholder="Código"
+              placeholder="CÓDIGO"
               value={namecode}
               onChange={(e) => setNamecode(e.target.value)}
               required
             />
-            <br />
-          </div>
-          <div>
-            <label>Preço:</label>
-            <br />
-            <input
+            <Label>Preço:</Label>
+            <Input
               type="text"
               name="nameprice"
-              placeholder="Preço"
+              placeholder="PREÇO"
               value={nameprice}
               onChange={(e) => setNameprice(e.target.value)}
               required
             />
-            <br />
-          </div>
-          <button type="submit">Criar Item</button>
-        </form>
+          <Button type="submit">Criar Item</Button>
+        </Form>
       </CardCreate>
 
-      <CardCreate>
-        <h2>Clique e veja os itens:</h2>
-        <button onClick={() => setShowEditDelete(!showEditDelete)}>
+      <CardCreate className='Card'>
+        <HTwo>Clique e veja os itens:</HTwo>
+        <Button onClick={() => setShowEditDelete(!showEditDelete)}>
           {showEditDelete ? 'Esconder Itens' : 'Mostrar Itens'}
-        </button>
+        </Button>
         {showEditDelete && (
-          <ul>
+          <Ul>
             {items.map((item) => (
-              <li key={item._id}>
+              <Li key={item._id}>
                 {editingItemId === item._id ? (
                   // Modo de edição
                   <>
-                    <label>Código:</label>
-                    <input
+                    <Label>Código:</Label>
+                    <Input
                       type="text"
                       value={editedCode}
                       onChange={(e) => setEditedCode(e.target.value)}
                     />
-                    <label>Preço:</label>
-                    <input
+                    <Label>Preço:</Label>
+                    <Input
                       type="text"
                       value={editedPrice}
                       onChange={(e) => setEditedPrice(e.target.value)}
                     />
-                    <button onClick={() => handleSaveEdit(item)}>Salvar</button>
+                    <Button onClick={() => handleSaveEdit(item)}>Salvar</Button>
                   </>
                 ) : (
                   // Modo de visualização
                   <CardItem>
-                    <img src={img} alt="Product Image" />
-                    <h3>{item.code}</h3>
-                    <p className="price">{`R$${item.price}`}</p>
-                    <button onClick={() => handleEdit(item)}>Editar</button>
-                    <button onClick={() => handleDelete(item._id)}>Excluir</button>
+                    <Img src={img} alt="Product Image" />
+                    <HThree>{item.code}</HThree>
+                    <Pe className="price">{`R$${item.price}`}</Pe>
+                    <SecondButton onClick={() => handleEdit(item)}>Editar</SecondButton>
+                    <SecondButton onClick={() => handleDelete(item._id)}>Excluir</SecondButton>
                   </CardItem>
                 )}
-              </li>
+              </Li>
             ))}
-          </ul>
+          </Ul>
         )}
       
-      <button onClick={logOut}>
+      <Button onClick={logOut}>
         Log Out
-      </button>
+      </Button>
       </CardCreate>
 
     </Container>

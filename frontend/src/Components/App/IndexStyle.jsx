@@ -6,8 +6,17 @@ export const AppStylus = styled.main`
         color:  #13444d;
         transition: 1s ease;
     }
-    .light.Description{     
-        color: #fff;    
+    .light .NavButton{
+        background-color:#9c5953;
+        color: white;
+        transition: 0.5s ease-in-out;
+        &:hover{
+            background-color: #f9c065;
+        }
+    }
+    .light .Card{
+        background-color: #9c5953;
+        color: white;
         transition: 1s ease;
     }
     .dark{
@@ -15,8 +24,17 @@ export const AppStylus = styled.main`
         color: #b6d0a0;
         transition: 1s ease;
     }
-    .dark.Description{
-        color: #ffdc73; 
+    .dark .NavButton{
+        background-color: #f9c065;
+        color: black;
+        transition: 0.5s ease-in-out;
+        &:hover{
+            background-color: #9c5953;
+        }
+    }
+    .dark .Card{
+        color: black;
+        background-color: #f9c065;
         transition: 1s ease;
     }
 `;
@@ -24,7 +42,8 @@ export const AppLayout = styled.section`
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Roboto', sans-serif; 
+        
 `;
 export const Content = styled.div`
     flex-grow: 1;

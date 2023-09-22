@@ -4,50 +4,56 @@ export const ContainerStyle = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding: 10rem 0;
 `;
 
 export const LoginContainerStyle = styled.div`
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border-radius: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    max-width: 400px;
-    width: 100%;
-`;
+    width: 50vw;
+`; 
 
 export  const TitleStyle = styled.h1`
-    font-size: 24px;
+    font-size: xx-large;
 `;
 
 export const LabelStyle = styled.label`
-    display: block;
-    font-size: 16px;
+    font-size: x-large;
     font-weight: bold;
+    margin: 1rem;
 `;
 
 export const InputStyle = styled.input`
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 30vw;
+    padding: 2rem;
+    margin: 1rem auto;
+    border: 0.01rem solid #ccc;
+    border-radius: 25px;
+    text-align: center;
+    font-size: x-large;
 `;
 
 export const ButtonStyle = styled.button`
-    background: #007bff;
+    background: #034b99;
     color: #fff;
-    padding: 10px 20px;
+    width: 30vw;
+    padding: 1.5rem 0;
+    margin: 2rem auto;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+    border-radius: 25px;
+    font-size: large;
     font-weight: bold;
+    cursor: pointer;
 `;
 
 export const LinkStyle = styled.p`
     display: block;
-    margin-top: 10px;
+    font-size: large;
+    font-weight: bold;
     text-decoration: none;
-    color: #007bff;
+    color: #034b99;
 `;

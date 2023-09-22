@@ -1,14 +1,25 @@
+const bcrypt = require('bcrypt');
 const User = require("../models/User");
 
-// Rota para cadastrar um novo usuário
 exports.createUser = async (req, res) => {
   try {
-    const newUser = new User(req.body);
+    const { username, email, celular, senha, facebook, instagram } = req.body;
+    const hashedPassword = await bcrypt.hash(senha, 10);
+
+    const newUser = new User({
+      username,
+      email,
+      celular,
+      senha: hashedPassword,
+      facebook,
+      instagram,
+    });
+
     await newUser.save();
     res.json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: "Erro ao cadastrar usuário" });
+    res.status(500).json({ success: false, error: 'Erro ao cadastrar usuário' });
   }
 };
 

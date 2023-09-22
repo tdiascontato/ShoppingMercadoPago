@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Container, Logo, Side, Button } from './IndexStyle';
+import { Container, Side, Button, Img } from './IndexStyle';
 
 export const NavBar = ({modeScreen},received) => {
     const [isLoggedIn, setIsLoggedIn] = useState(window.localStorage.getItem("loggedIn"));
@@ -13,30 +13,28 @@ export const NavBar = ({modeScreen},received) => {
         <Container>
             
                <Link to="/">
-                    <Logo>
-                        Logo Logística
-                    </Logo>
+                    <Img src='bee-hive.png' alt='Logo'/>
                 </Link>   
             
             <Side>
-                <Button onClick={modeScreen} >
-                    { received=== "light" ? "Mode Dark" : "Mode Light"}
-                </Button>
                 <Link to="/login">
-                    <Button>
+                    <Button className='NavButton' >
                         {isLoggedIn ? "Dashboard" : "Login"}
                     </Button>
                 </Link>
                 <Link to="/cadastro">
-                    <Button>
+                    <Button className='NavButton'>
                         Cadastro
                     </Button>
                 </Link>
+                <Button className='NavButton' onClick={modeScreen} >
+                    { received=== "light" ? "Mode Dark" : "Mode Light"}
+                </Button>
             </Side>
 
         </Container>
     );
-}
+} 
 NavBar.propTypes = {
     modeScreen: PropTypes.func.isRequired,
   };
