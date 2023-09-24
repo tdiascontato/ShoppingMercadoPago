@@ -11,37 +11,30 @@ exports.createUser = async (req, res) => {
       email,
       celular,
       senha: hashedPassword,
-      facebook,
+      facebook, 
       instagram,
     });
 
     await newUser.save();
-    res.json({ success: true });
+    res.json({ success: true, user: newUser });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Erro ao cadastrar usuário' });
+    res.status(500).json({ success: false, error: 'Error creating user' });
   }
 };
 
-exports.login = async (req, res) => {
-  const { email, senha } = req.body; // Make sure the field names match the request body.
-
+exports.getUserByUsername = async (req, res) => {//Rota para  isso?
   try {
-    const user = await User.findOne({ email });
+    const { username } = req.params;
+    const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(400).json({ success: false, error: 'User not found' });
+      return res.status(404).json({ Error: 'Usuário não encontrado.' });
     }
 
-    // Compare the plain-text password with the stored plain-text password.
-    if (senha !== user.senha) {
-      return res.status(400).json({ success: false, error: 'Incorrect password' });
-    }
-
-    res.json({ success: true, message: 'Login successful' });
+    return res.status(200).json(user);
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ success: false, error: 'Error during login', detailedError: error.message }); // Provide a detailed error message for debugging.
+    console.error(error);
+    return res.status(500).json({ Error: 'Erro ao obter usuário por username.' });
   }
 };
-

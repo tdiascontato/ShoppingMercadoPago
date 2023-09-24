@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ButtonStyle, ContainerStyle, InputStyle, LabelStyle, LinkStyle, LoginContainerStyle, TitleStyle } from "./IndexStyle";
 
 export const Login = () => {
+
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: "",
@@ -22,6 +23,9 @@ export const Login = () => {
         alert("Login successful!");
         window.localStorage.setItem("token", response.data);
         window.localStorage.setItem("loggedIn", true);
+        window.localStorage.setItem("user", JSON.stringify(response.data.user));
+        console.log(response.data);
+        window.location.reload();
         navigate("/dashboard");
       } else {
         alert("Invalid credentials. Please try again.");
@@ -31,8 +35,7 @@ export const Login = () => {
       alert("Erro durante o login! Verifique as entradas!");
     }
   };
-
-  // Verifique o status de login quando o componente for montado
+  
   useEffect(() => {
     const isLoggedIn = window.localStorage.getItem("loggedIn");
     if (isLoggedIn === "true") {
@@ -43,6 +46,7 @@ export const Login = () => {
   return (
     <ContainerStyle>
       <LoginContainerStyle className="Card">
+
         <TitleStyle>Login</TitleStyle>
         <LabelStyle>Email:</LabelStyle>
         <InputStyle
@@ -59,9 +63,13 @@ export const Login = () => {
           onChange={handleInputChange}
         />
         <ButtonStyle onClick={handleLogin}>Login</ButtonStyle>
+
         <Link to="/cadastro">
           <LinkStyle>Create an account</LinkStyle>
         </Link>
+
+        
+
       </LoginContainerStyle>
     </ContainerStyle>
   );

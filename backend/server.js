@@ -6,25 +6,34 @@ const mercadopago = require("mercadopago");
 const connectDB = require('./database.js');
 const ItemController = require('./controllers/ItemController.js');
 const UserController = require("./controllers/UserController");
+const LoginController = require("./controllers/LoginController");
+
 connectDB();
+
 app.use(express.json());
 app.use(cors());
 
-
-//Chave DE ACESSO vendedor
+// Chave DE ACESSO vendedor
 mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN,
 });
 
-//routes
+// Routes
 app.put("/updateitem/:id", ItemController.update);
 app.delete("/deleteitem/:id", ItemController.destroy);
+app.get('/api/environment', (req, res) => {
+  const envVariables = {
+    SECRETKEY: process.env.SECRETKEY,
+  };
+  res.json(envVariables);
+});
+app.get("/user/:username", UserController.getUserByUsername);
 app.get("/loaditems", ItemController.index);
-app.post("/login", UserController.login);
+app.post("/login", LoginController.login);
 app.post("/cadastro", UserController.createUser);
-app.post("/createitem", ItemController.create);
+app.post("/createitem/:userId", ItemController.create);
 app.post("/createorder", (req, res) => {
-    //Mandando para API
+    // Mandando para API
     let preference = {
       items: [
         {
@@ -53,9 +62,7 @@ app.post("/createorder", (req, res) => {
     });
 });
 
-
-
-//Canal Servidor
+// Canal Servidor
 app.listen(process.env.PORT, () => {
     console.log(`Estamos rodando em http://localhost:${process.env.PORT}/`);
-  });
+});

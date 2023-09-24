@@ -7,6 +7,6 @@ const userSchema = new mongoose.Schema({
   senha: String,
   facebook: String,
   instagram: String,
-});
+}); 
 
 module.exports = mongoose.model("User", userSchema);

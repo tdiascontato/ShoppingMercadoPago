@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, Navigate, RouterProvider, } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { App } from './Components/App/Index';
 import { Item } from './Components/Item'
@@ -18,7 +18,12 @@ export const GlobalStyle = createGlobalStyle`
     font-family: Arial, sans-serif; 
   }
 `;
+
 const isLoggedIn = window.localStorage.getItem("loggedIn");
+function getDashboardOrLoginComponent() {
+  return isLoggedIn ? <Dashboard /> : <Login />;
+}
+
 const router = createBrowserRouter([
   {
     path: '/', 
@@ -35,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/dashboard', 
-        element: <Dashboard />, 
+        element:  getDashboardOrLoginComponent(),   
       },
       {
         path: '/item', 
@@ -43,7 +48,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/login', 
-        element: isLoggedIn ? <Navigate to="/dashboard" /> : <Login />, 
+        element: getDashboardOrLoginComponent(), 
       },
       {
         path: '/cadastro', 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const schema = new Schema({
+const itemSchema = new Schema({
   code: {
     type: String,
     required: true,
@@ -11,9 +11,12 @@ const schema = new Schema({
     type: Number,
     required: true,
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Referência ao modelo User
+  },
 }, {
   timestamps: true,
 });
 
-module.exports = mongoose.model("Item", schema);
-
+module.exports = mongoose.model("Item", itemSchema);

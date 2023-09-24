@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+//import { useParams } from 'react-router-dom'; 
 import axios from 'axios';
 import { initMercadoPago } from '@mercadopago/sdk-react';
 import { Container, CardCreate, CardItem, Form, HTwo, Label, Input, Button, Img, HThree, Ul, Li, SecondButton, Pe} from './IndexStyle';
@@ -8,6 +9,7 @@ export const Dashboard = () => {
   // Chave pública
   initMercadoPago("TEST-19b333d1-e58f-411d-b45e-86d22a70ed82");
 
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const [namecode, setNamecode] = useState('');
   const [nameprice, setNameprice] = useState('');
   const [items, setItems] = useState([]);
@@ -17,18 +19,21 @@ export const Dashboard = () => {
   const [showEditDelete, setShowEditDelete] = useState(false);
 
   useEffect(() => { 
-    loadItems();
+    loadItems(); 
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      await axios.post('http://localhost:4004/createitem', {
+      const response = await axios.get(`http://localhost:4004/user/${user.username}`);
+      const userId = response.data._id; // Obtém o _id do usuário
+  
+      await axios.post(`http://localhost:4004/createitem/${userId}`, {
         code: namecode,
         price: nameprice,
       });
-
+  
       setNamecode('');
       setNameprice('');
       loadItems();
@@ -36,7 +41,10 @@ export const Dashboard = () => {
       console.error(error);
     }
   };
-
+  
+/*
+PASSAR CONST USER COMO PARAMETRO E DEPOIS IR ENDIREITANDO O CONTROLLER E MODEL
+*/
   const loadItems = async () => {
     try {
       const response = await axios.get('http://localhost:4004/loaditems');
@@ -87,6 +95,7 @@ export const Dashboard = () => {
     <Container>
 
       <CardCreate className='Card'>
+        <HTwo>Hello {user.username}</HTwo>
         <Form onSubmit={handleSubmit}>
             <HTwo>Criar Itens</HTwo>
             <Label>Código:</Label>
