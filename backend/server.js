@@ -28,7 +28,7 @@ app.get('/api/environment', (req, res) => {
   res.json(envVariables);
 });
 app.get("/user/:username", UserController.getUserByUsername);
-app.get("/loaditems", ItemController.index);
+app.get("/loaditems/", ItemController.index);
 app.post("/login", LoginController.login);
 app.post("/cadastro", UserController.createUser);
 app.post("/createitem/:userId", ItemController.create);

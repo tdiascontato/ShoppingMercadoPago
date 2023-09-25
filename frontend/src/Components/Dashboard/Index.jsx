@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-//import { useParams } from 'react-router-dom'; 
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { initMercadoPago } from '@mercadopago/sdk-react';
 import { Container, CardCreate, CardItem, Form, HTwo, Label, Input, Button, Img, HThree, Ul, Li, SecondButton, Pe} from './IndexStyle';
@@ -20,6 +19,7 @@ export const Dashboard = () => {
 
   useEffect(() => { 
     loadItems(); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e) => {
@@ -42,17 +42,20 @@ export const Dashboard = () => {
     }
   };
   
-/*
-PASSAR CONST USER COMO PARAMETRO E DEPOIS IR ENDIREITANDO O CONTROLLER E MODEL
-*/
   const loadItems = async () => {
     try {
-      const response = await axios.get('http://localhost:4004/loaditems');
-      setItems(response.data);
+      const response = await axios.get(`http://localhost:4004/loaditems/`);
+      const responseTwo = await axios.get(`http://localhost:4004/user/${user.username}`);
+      const userId = responseTwo.data._id; // Obtém o _id do usuário
+      const idResponse = response.data;
+      const userItems = await idResponse.filter((item) => item.createdBy == userId);
+      setItems(userItems);
     } catch (error) {
       console.error(error);
     }
   };
+  
+  
 
   const handleDelete = async (itemId) => {
     try {
@@ -125,6 +128,7 @@ PASSAR CONST USER COMO PARAMETRO E DEPOIS IR ENDIREITANDO O CONTROLLER E MODEL
         <Button onClick={() => setShowEditDelete(!showEditDelete)}>
           {showEditDelete ? 'Esconder Itens' : 'Mostrar Itens'}
         </Button>
+        
         {showEditDelete && (
           <Ul>
             {items.map((item) => (
@@ -149,11 +153,11 @@ PASSAR CONST USER COMO PARAMETRO E DEPOIS IR ENDIREITANDO O CONTROLLER E MODEL
                 ) : (
                   // Modo de visualização
                   <CardItem>
-                    <Img src={img} alt="Product Image" />
-                    <HThree>{item.code}</HThree>
-                    <Pe className="price">{`R$${item.price}`}</Pe>
-                    <SecondButton onClick={() => handleEdit(item)}>Editar</SecondButton>
-                    <SecondButton onClick={() => handleDelete(item._id)}>Excluir</SecondButton>
+                      <Img src={img} alt="Product Image" />
+                      <HThree>{item.code}</HThree>
+                      <Pe className="price">{`R$${item.price}`}</Pe>
+                      <SecondButton onClick={() => handleEdit(item)}>Editar</SecondButton>
+                      <SecondButton onClick={() => handleDelete(item._id)}>Excluir</SecondButton>
                   </CardItem>
                 )}
               </Li>

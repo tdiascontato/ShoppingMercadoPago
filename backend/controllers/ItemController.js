@@ -3,28 +3,26 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 
 class ItemController {
+
   async index(req, res) {
     try {
       const items = await Item.find();
-      return res.status(200).json(items);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ Error: 'Internal server error.' });
-    } 
+      res.status(200).json(items);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ Error: 'Internal server error.' });
+    }
   }
   
   async create(req, res) {
     try {
       const { code, price } = req.body;
       const createdBy = req.params.userId; // Obtém o userId a partir dos parâmetros da URL
-  
       // Verifica se o usuário existe
       const user = await User.findById(createdBy);
-  
       if (!user) {
         return res.status(404).json({ Error: 'Usuário não encontrado.' });
       }
-  
       const item = await Item.create({ code, price, createdBy });
       console.log('Item created:', item);
       return res.status(201).json(item);
