@@ -2,18 +2,22 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     margin: 5vh auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 `;
 export const CardCreate = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 5vh 0;
-    margin: 5vh auto;
-    width: 60vw;
+    padding: 3vh;
+    margin: 5vh 3vh;
+    width: max-content;
     height: max-content;
     border-radius: 20px;
-    `;
+`;
+
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
@@ -22,6 +26,7 @@ export const Form = styled.form`
 `;
 export const HTwo = styled.h2`
     font-size: xx-large;
+    text-align: center;
     margin: 0 auto;
     margin-bottom: 2rem;
 `;
@@ -63,6 +68,9 @@ export const Button = styled.button`
         background: white;
         transition: 1s ease;
     } 
+    &.Logout{
+        background-color: #dc0e0e;
+    }
     `;
 export const SecondButton = styled.div`
     border: none;

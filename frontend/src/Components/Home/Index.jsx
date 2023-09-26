@@ -19,7 +19,7 @@ export const Home = () => {
       console.error(error);
     }
   };
-
+  
   return (
     <Container>
 
@@ -39,9 +39,9 @@ export const Home = () => {
               <Img src={img} alt="Product Image" />
               <HThree>{item.code}</HThree>
               <Pe className="price">{`R$${item.price}`}</Pe>
-              <Link to="/item">
+              <Link to={`/item/${item._id}`}>
                 <Button>Ir para a loja!</Button>
-              </Link> 
+              </Link>
 
           </CardItem>
           ))}

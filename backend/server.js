@@ -7,7 +7,9 @@ const connectDB = require('./database.js');
 const ItemController = require('./controllers/ItemController.js');
 const UserController = require("./controllers/UserController");
 const LoginController = require("./controllers/LoginController");
-
+const PaymentController = require("./services/PaymentController.js");
+const PaymentService = require("./services/PaymentService.js");
+const PaymentInstance = new PaymentController(new PaymentService());
 connectDB();
 
 app.use(express.json());
@@ -29,6 +31,9 @@ app.get('/api/environment', (req, res) => {
 });
 app.get("/user/:username", UserController.getUserByUsername);
 app.get("/loaditems/", ItemController.index);
+app.get("/subscription", function (req, res) {
+  PaymentInstance.getSubscriptionLink(req, res);
+});
 app.post("/login", LoginController.login);
 app.post("/cadastro", UserController.createUser);
 app.post("/createitem/:userId", ItemController.create);

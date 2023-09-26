@@ -43,7 +43,7 @@ export const Item = () => {
 
   const loadItems = async () => {
     try {
-      const response = await axios.get('http://localhost:4004/loaditems');
+      const response = await axios.get(`http://localhost:4004/loaditems/`);
       setItems(response.data);
     } catch (error) {
       console.error(error);

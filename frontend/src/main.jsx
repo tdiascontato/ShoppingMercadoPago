@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { App } from './Components/App/Index';
-import { Item } from './Components/Item'
+import { Item } from "./Components/Item/Index";
 import { Cadastro } from './Components/Cadastro/Index';
 import { Login } from './Components/Login/Index';
 import { ErrorPage } from './Components/ErrorPage/Index';
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element:  getDashboardOrLoginComponent(),   
       },
       {
-        path: '/item', 
+        path: '/item/:id', 
         element: <Item />, 
       },
       {

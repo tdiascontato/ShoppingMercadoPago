@@ -12,7 +12,7 @@ export const NavBar = ({modeScreen},received) => {
         <Container>
             
                <Link to="/">
-                    <Img src='bee-hive.png' alt='Logo'/>
+                    <Img src= "bee-hive.png" alt='Logo'/>
                 </Link>   
             
             <Side>

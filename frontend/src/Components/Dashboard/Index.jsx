@@ -55,7 +55,14 @@ export const Dashboard = () => {
     }
   };
   
-  
+  const handleSubscription = async () => {
+    try {
+      const subscription = await axios.get('http://localhost:4004/subscription');
+      console.log('Enviei', subscription.data.init_point);
+    } catch (error) {/*Parei 26.09*/
+      console.log(error);
+    }
+  };
 
   const handleDelete = async (itemId) => {
     try {
@@ -80,8 +87,7 @@ export const Dashboard = () => {
         price: editedPrice,
       });
       setEditingItemId(null); // Sai do modo de edição após a conclusão
-      // Recarregar os itens após a edição
-      loadItems();
+      loadItems();// Recarregar os itens após a edição
     } catch (error) {
       console.error('Erro ao salvar as alterações:', error);
     }
@@ -165,11 +171,22 @@ export const Dashboard = () => {
           </Ul>
         )}
       
-      <Button onClick={logOut}>
+      <Button onClick={logOut} className='Logout'>
         Log Out
       </Button>
       </CardCreate>
 
+      <CardCreate className='Card'>
+        <HTwo>Edit User</HTwo>
+        <Button>Editar!</Button>
+      </CardCreate>
+      
+      <CardCreate className='Card'>
+        <HTwo >Premium</HTwo>
+        <Button onClick={handleSubscription}>Clicar</Button>
+      </CardCreate>
+
+      
     </Container>
   );
 };
