@@ -21,6 +21,7 @@ mercadopago.configure({
 });
 
 // Routes
+app.put("/updateuser/:id", UserController.editUser);
 app.put("/updateitem/:id", ItemController.update);
 app.delete("/deleteitem/:id", ItemController.destroy);
 app.get('/api/environment', (req, res) => {
@@ -30,6 +31,7 @@ app.get('/api/environment', (req, res) => {
   res.json(envVariables);
 });
 app.get("/user/:username", UserController.getUserByUsername);
+app.get("/searchItem/:id", ItemController.searchItem);
 app.get("/loaditems/", ItemController.index);
 app.get("/subscription", function (req, res) {
   PaymentInstance.getSubscriptionLink(req, res);

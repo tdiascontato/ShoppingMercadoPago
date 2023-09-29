@@ -16,6 +16,21 @@ export const CardCreate = styled.div`
     width: max-content;
     height: max-content;
     border-radius: 20px;
+    .editUser{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .alert-success{
+        background-color: #25ab73;
+        max-width: 25vw;
+        padding: 0.5rem;
+        color:white;
+        font-size: x-large;
+        text-align: center;
+        border-radius: 20px;
+    }
 `;
 
 export const Form = styled.form`
@@ -51,18 +66,18 @@ export const Input = styled.input`
     border-radius: 25px;
 `;
 export const Button = styled.button`
-    border: none;
-    outline: 0;
-    width: 30vw;
-    margin:2rem 0;
-    padding: 1rem;
-    font-size: x-large;
-    text-align: center;
-    background-color: black;
-    color: white;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: 1s ease;
+        border: none;
+        outline: 0;
+        width: 30vw;
+        margin:2rem 0;
+        padding: 1rem;
+        font-size: x-large;
+        text-align: center;
+        background-color: black;
+        color: white;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 1s ease;
     &:hover {
         color: black;
         background: white;
@@ -70,6 +85,11 @@ export const Button = styled.button`
     } 
     &.Logout{
         background-color: #dc0e0e;
+    }
+    &.premium{
+        background-color: #6296a5;
+        border: none;
+        color: white
     }
     `;
 export const SecondButton = styled.div`

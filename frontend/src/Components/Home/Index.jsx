@@ -33,18 +33,16 @@ export const Home = () => {
       {items.length > 0 && (
       <CardProduct>
 
-          {items.map((item) => (
+        {items.map((item) => (
           <CardItem key={item._id}>
-
-              <Img src={img} alt="Product Image" />
-              <HThree>{item.code}</HThree>
-              <Pe className="price">{`R$${item.price}`}</Pe>
-              <Link to={`/item/${item._id}`}>
-                <Button>Ir para a loja!</Button>
-              </Link>
-
+            <Img src={img} alt="Product Image" />
+            <HThree>{item.code}</HThree>
+            <Pe className="price">{`R$${item.price}`}</Pe>
+            <Link to={`/item/${item._id}`}> {/* Use Link para navegar para a página do item */}
+              <Button>Ir para a loja!</Button>
+            </Link>
           </CardItem>
-          ))}
+        ))}
 
       </CardProduct>
       )}

@@ -13,8 +13,8 @@ class PaymentService {
         transaction_amount: 10,
         currency_id: "BRL"
       },
-      back_url: "https://google.com.br",
-      payer_email: "test_user_2103390560@testuser.com"//email comprador
+      back_url: "https://tdiascontato.vercel.app/",
+      payer_email: "test_user_2075727788@testuser.com"
     };
 
     const subscription = await axios.post(url, body, {
@@ -23,7 +23,6 @@ class PaymentService {
             Authorization: `Bearer ${process.env.ACCESS_TOKEN}`//token vendedor
         }
     });
-    //console.log("Cheguei em PaymentService:", subscription.data.init_point);
     return subscription.data;
   }
 }

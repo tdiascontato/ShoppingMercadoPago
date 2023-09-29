@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { useParams, Link } from 'react-router-dom';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Container, CardItem, CardProduct, Img, HThree, Pe, Button } from './IndexStyle';
 import img from '../../img/613480.jpg';
@@ -7,14 +8,24 @@ import img from '../../img/613480.jpg';
 export const Item = () => {
   // Chave pública -> pegar const cadastro?
   initMercadoPago("TEST-19b333d1-e58f-411d-b45e-86d22a70ed82");
-
-  const [items, setItems] = useState([]);
+  const { id } = useParams();
+  const [item, setItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // Usando useCallback para memoizar a função loadItem
+  const loadItem = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:4004/searchitem/${id}`);
+      setItem(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [id]); // Adicione id como uma dependência
+
   useEffect(() => {
-    // Carregar os itens quando o componente for montado
-    loadItems();
-  }, []);
+    // Carregar o item quando o componente for montado
+    loadItem();
+  }, [loadItem]); // Passando loadItem como dependência
 
   const createPreference = async (item) => {
     try {
@@ -41,30 +52,20 @@ export const Item = () => {
     console.log('Saindo da Req');
   };
 
-  const loadItems = async () => {
-    try {
-      const response = await axios.get(`http://localhost:4004/loaditems/`);
-      setItems(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <Container>
-      {items.length > 0 && (
-        <CardProduct> 
-          {items.map((item) => (
-            <CardItem key={item._id}>
-              <Img src={img} alt="Product Image" />
-              <HThree>{item.code}</HThree>
-              <Pe className="price">{`R$${item.price}`}</Pe>
-              <Button onClick={() => handleBuy(item)}>Comprar com MercadoPago</Button>
-              {selectedItem && selectedItem._id === item._id && (
-                <Wallet initialization={{ preferenceId: selectedItem.preferenceId }} />
-              )}
-            </CardItem>
-          ))}
+      {item && (
+        <CardProduct>
+          <CardItem key={item._id}>
+            <Img src={img} alt="Product Image" />
+            <HThree>{item.code}</HThree>
+            <Pe className="price">{`R$${item.price}`}</Pe>
+            <Button onClick={() => handleBuy(item)}>Comprar com MercadoPago</Button>
+            {selectedItem && selectedItem._id === item._id && (
+              <Wallet initialization={{ preferenceId: selectedItem.preferenceId }} />
+            )}
+            <Pe><Link to="/" className='homeButton'>Voltar para a Home</Link></Pe>
+          </CardItem>
         </CardProduct>
       )}
     </Container>

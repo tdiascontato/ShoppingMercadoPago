@@ -4,27 +4,38 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 5rem auto;
 `;
 
 export const LoginContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   text-align: center;
   justify-content: center;
-  align-items: center;
-  width: 50vw;
+  align-items: flex-start;
+  width: max-content;
   height: max-content;
   border-radius: 25px;
-  padding: 4rem 0;
+  padding: 4rem 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export const GeralInformation = styled.section`
+  display: flex;
+  flex-direction: column;
+`;
+export const AddressInformation = styled.section`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Titleh1 = styled.h1`
   font-size: xx-large;
   margin-bottom: 2rem;
+  text-align: center;
 `;
 
 export const Label = styled.label`
@@ -39,12 +50,17 @@ export const Input = styled.input`
   font-size: x-large;
   text-align: center;
   margin-bottom: 16px;
-  border: 1px solid #ccc; /* Cor da borda do campo de entrada */
+  border: 1px solid #ccc;
   border-radius: 25px;
   outline: none;
 
   &:focus {
-    border-color: #034b99; /* Cor da borda ao receber foco */
+    border-color: #034b99; 
+  }
+  &&.keymercadopago{
+    background-color: #6ca562;
+    border: none;
+    color: white
   }
 `;
 
@@ -60,8 +76,7 @@ export const Button = styled.button`
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
-
   &:hover {
-    background-color: #034b99; /* Cor do botão ao passar o mouse */
+    background-color: #034b99; 
   }
 `;

@@ -16,11 +16,37 @@ export const Dashboard = () => {
   const [editedCode, setEditedCode] = useState('');
   const [editedPrice, setEditedPrice] = useState('');
   const [showEditDelete, setShowEditDelete] = useState(false);
+  const [status, setStatus] = useState(false);
+  const [isEditingUser, setIsEditingUser] = useState(false);
+  const [editSuccess, setEditSuccess] = useState(false);
+  const [editedUser, setEditedUser] = useState({
+    username: '',
+    email: '',
+    celular: '',
+    senha: '',
+    facebook: '',
+    instagram: '',
+    endereco: '',
+    bairro: '',
+    cidade: '',
+    cep: '',
+    keymercadopago: '',
+  });
+
 
   useEffect(() => { 
-    loadItems(); 
+    loadItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (editSuccess) {
+      setTimeout(() => {
+        setEditSuccess(false);
+        window.location.reload();
+      }, 2000);
+    }
+  }, [editSuccess]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,11 +84,30 @@ export const Dashboard = () => {
   const handleSubscription = async () => {
     try {
       const subscription = await axios.get('http://localhost:4004/subscription');
-      console.log('Enviei', subscription.data.init_point);
-    } catch (error) {/*Parei 26.09*/
-      console.log(error);
+      // Verifique se a resposta possui o campo init_point
+      if (subscription.data.init_point) {
+        // Redirecione a página para init_point
+        setStatus(true);
+        window.location.href = subscription.data.init_point;
+      } else {
+        console.error('Resposta inválida da API de inscrição');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
+/*
+  const subscheck = async () => {
+    try{
+      const response = await axios.get(`http://localhost:4004/user/${user.username}`);
+      const email = response.data.email; // Obtém o email do usuário
+      const subscription = await axios.get(`https://api.mercadopago.com/preapproval/${email}`);
+      subscription ? console.log(subscription) : console.log("Não foi encontrado assinatura");
+    }catch(err){
+      console.error(err)
+    }
+  }
+  */
 
   const handleDelete = async (itemId) => {
     try {
@@ -92,6 +137,29 @@ export const Dashboard = () => {
       console.error('Erro ao salvar as alterações:', error);
     }
   };
+
+  const editUser = async () =>{
+    setIsEditingUser(!isEditingUser); 
+  }
+
+  const handleEditUserFieldChange = (fieldName, value) => {
+    setEditedUser((prevEditedUser) => ({
+      ...prevEditedUser,
+      [fieldName]: value,
+    }));
+  };
+  
+  
+  const handleSaveUser = async () => {
+    try {
+      const response = await axios.put(`http://localhost:4004/updateuser/${user.username}`, editedUser);
+      console.log(response.data);
+      setEditSuccess(true);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
+  
 
   //logout
   const logOut = () => {
@@ -177,13 +245,121 @@ export const Dashboard = () => {
       </CardCreate>
 
       <CardCreate className='Card'>
-        <HTwo>Edit User</HTwo>
-        <Button>Editar!</Button>
+        <HTwo>Edit {user.username}</HTwo>
+        <Button onClick={editUser}>Editar!</Button> {/*Botão para criar formulário para editar usuário*/}
+        {isEditingUser ? (
+          <>
+          <div className='editUser'>
+            <Label>Username:</Label>
+            <Input
+              type="text"
+              name="username"
+              placeholder="Edit Username"
+              value={editedUser.username}
+              onChange={(e) => handleEditUserFieldChange('username', e.target.value)}
+            />
+            <Label>Email:</Label>
+            <Input
+              type="text"
+              name="email"
+              placeholder="Edit Email"
+              value={editedUser.email}
+              onChange={(e) => handleEditUserFieldChange('email', e.target.value)}
+            />
+            <Label>Celular:</Label>
+            <Input
+              type="text"
+              name="celular"
+              placeholder="Edit Celular"
+              value={editedUser.celular}
+              onChange={(e) => handleEditUserFieldChange('celular', e.target.value)}
+            />
+            <Label>Senha:</Label>
+            <Input
+              type="password"
+              name="senha"
+              placeholder="Edit Senha"
+              value={editedUser.senha}
+              onChange={(e) => handleEditUserFieldChange('senha', e.target.value)}
+            />
+            <Label>Facebook:</Label>
+            <Input
+              type="text"
+              name="facebook"
+              placeholder="Edit Facebook"
+              value={editedUser.facebook}
+              onChange={(e) => handleEditUserFieldChange('facebook', e.target.value)}
+            />
+            <Label>Instagram:</Label>
+            <Input
+              type="text"
+              name="instagram"
+              placeholder="Edit Instagram"
+              value={editedUser.instagram}
+              onChange={(e) => handleEditUserFieldChange('instagram', e.target.value)}
+            />
+            <Label>Endereco:</Label>
+            <Input
+              type="text"
+              name="endereco"
+              placeholder="Edit Endereco"
+              value={editedUser.endereco}
+              onChange={(e) => handleEditUserFieldChange('endereco', e.target.value)}
+            />
+            <Label>Bairro:</Label>
+            <Input
+              type="text"
+              name="bairro"
+              placeholder="Edit Bairro"
+              value={editedUser.bairro}
+              onChange={(e) => handleEditUserFieldChange('bairro', e.target.value)}
+            />
+            <Label>Cidade:</Label>
+            <Input
+              type="text"
+              name="cidade"
+              placeholder="Edit Cidade"
+              value={editedUser.cidade}
+              onChange={(e) => handleEditUserFieldChange('cidade', e.target.value)}
+            />
+            <Label>Cep:</Label>
+            <Input
+              type="text"
+              name="cep"
+              placeholder="Edit Cep"
+              value={editedUser.cep}
+              onChange={(e) => handleEditUserFieldChange('cep', e.target.value)}
+            />
+            <Label>Keymercadopago:</Label>
+            <Input
+              type="text"
+              name="keymercadopago"
+              placeholder="Edit Keymercadopago"
+              value={editedUser.keymercadopago}
+              onChange={(e) => handleEditUserFieldChange('keymercadopago', e.target.value)}
+            />
+            
+            <Button onClick={handleSaveUser}>Save User</Button>
+
+            {editSuccess && (
+              <div className="alert-success">
+                Usuário editado com sucesso! A página será recarregada em breve.
+              </div>
+            )}
+
+          </div>
+          <Button className='Logout' onClick={() => setIsEditingUser(false)}>Fechar</Button>
+          </>
+        ) : null}
       </CardCreate>
-      
+
       <CardCreate className='Card'>
         <HTwo >Premium</HTwo>
         <Button onClick={handleSubscription}>Clicar</Button>
+        {status ? 
+        <Button className='premium'>Você é PREMIUM!</Button>
+        : ""
+        }
       </CardCreate>
 
       

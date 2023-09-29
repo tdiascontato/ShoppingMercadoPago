@@ -19,32 +19,42 @@ export const CardItem = styled.div`
     padding: 2rem auto;
 `;
 export const Img = styled.img`
-    width: 100px;
+    width: 30vw;
+    border-radius: 25%;
 `;
 export const HThree = styled.h3`
-    width: 100px;
+    font-size: xx-large;
 `;
 export const Pe = styled.p`
-    font-size: large;
-    color:white;
-`;
+    font-size: x-large;
+    .homeButton{
+        padding: 0.5rem;
+        text-decoration: none;
+        color: white;
+        background-color: black;
+        border-radius: 20px;
+        transition: 1s ease;
+        &:hover{
+            background-color: white;
+            color: black;
+            transition: 1s ease;
+        }
+    }
+    `;
 export const Button = styled.button`
     border-radius: 20px;
     color: white;
-    font-size: 1rem;
+    font-size: x-large;
     font-weight: bold;
     text-decoration: none;
-    background-color: hsla(189, 85%, 28%, 1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.0125),
-    0 1px 1px rgba(0, 0, 0, 0.05);
-    border-bottom-width: 0.5rem;
-
-    &:hover {
-    background-color: hsla(189, 85%, 32%, 1);
-    }
-
-    &:active {
-    border-bottom-width: 0.1rem;
-    border-top-width: 0.5rem;
+    background-color: #7dbd66;
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: 1s ease;
+    &:hover{
+        background-color: #5ed5d7;
+        color: black;
+        transition: 1s ease;
     }
 `;

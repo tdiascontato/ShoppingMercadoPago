@@ -16,13 +16,20 @@ class ItemController {
   
   async searchItem(req, res) {
     try {
-      const items = await Item.find();
-      res.status(200).json(items);
+      const { id } = req.params;
+      const item = await Item.findById(id);
+  
+      if (!item) {
+        return res.status(404).json({ Error: 'Item não encontrado.' });
+      }
+  
+      res.status(200).json(item);
     } catch (error) {
       console.error(error);
       res.status(500).json({ Error: 'Internal server error.' });
     }
   }
+  
   
   async create(req, res) {
     try {

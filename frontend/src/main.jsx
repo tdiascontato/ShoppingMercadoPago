@@ -54,7 +54,6 @@ const router = createBrowserRouter([
         path: '/cadastro', 
         element: <Cadastro />, 
       },
-    //element: isLoggedIn == "true" ? <Product /> : <Login />,
     ]
   },
 ]);
