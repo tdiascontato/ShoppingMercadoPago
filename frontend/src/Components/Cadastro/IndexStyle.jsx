@@ -57,8 +57,8 @@ export const Input = styled.input`
   &:focus {
     border-color: #034b99; 
   }
-  &&.keymercadopago{
-    background-color: #6ca562;
+  &&.publicK, &&.accessT{
+    background-color: #9cda92;
     border: none;
     color: white
   }

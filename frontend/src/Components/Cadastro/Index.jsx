@@ -25,7 +25,8 @@ export const Cadastro = () => {
     bairro: "",
     cidade: "",
     cep: "",
-    keymercadopago: "",
+    publicKey: "",
+    accessToken: "",
   });
 
   const handleInputChange = (e) => {
@@ -137,12 +138,20 @@ export const Cadastro = () => {
             value={userData.cep}
             onChange={handleInputChange}
           />
-          <Label>Chave Mercado Pago:</Label>
+          <Label>Public Key Mercado Pago:</Label>
           <Input
             type="text"
-            className="keymercadopago"
-            name="keymercadopago"
-            value={userData.keymercadopago}
+            className="publicK"
+            name="publicKey"
+            value={userData.publicKey}
+            onChange={handleInputChange}
+          />
+          <Label>Access Token Mercado Pago:</Label>
+          <Input
+            type="text"
+            className="accessT"
+            name="accessToken"
+            value={userData.accessToken}
             onChange={handleInputChange}
           />
 

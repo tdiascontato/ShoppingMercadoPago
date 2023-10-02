@@ -5,20 +5,21 @@ import { Container, CardCreate, CardItem, Form, HTwo, Label, Input, Button, Img,
 import img from '../../img/613480.jpg';
 
 export const Dashboard = () => {
-  // Chave pública
-  initMercadoPago("TEST-19b333d1-e58f-411d-b45e-86d22a70ed82");
-
+  
   const user = JSON.parse(window.localStorage.getItem("user"));
-  const [namecode, setNamecode] = useState('');
-  const [nameprice, setNameprice] = useState('');
-  const [items, setItems] = useState([]);
+  
+  // Public Key Vendedor
+  initMercadoPago(`${user.publicKey}`);
+
   const [editingItemId, setEditingItemId] = useState(null);
   const [editedCode, setEditedCode] = useState('');
   const [editedPrice, setEditedPrice] = useState('');
-  const [showEditDelete, setShowEditDelete] = useState(false);
-  const [status, setStatus] = useState(false);
-  const [isEditingUser, setIsEditingUser] = useState(false);
   const [editSuccess, setEditSuccess] = useState(false);
+  const [isEditingUser, setIsEditingUser] = useState(false);
+  const [items, setItems] = useState([]);
+  const [namecode, setNamecode] = useState('');
+  const [nameprice, setNameprice] = useState('');
+  const [showEditDelete, setShowEditDelete] = useState(false);
   const [editedUser, setEditedUser] = useState({
     username: '',
     email: '',
@@ -30,9 +31,28 @@ export const Dashboard = () => {
     bairro: '',
     cidade: '',
     cep: '',
-    keymercadopago: '',
+    publicKey: '',
+    accessToken: '',
   });
 
+  useEffect(() => {
+  
+    axios.get(`http://localhost:4004/user/${user.username}`)
+      .then((response) => {
+        const accessToken = response.data.accessToken;
+        initMercadoPago(accessToken);
+        axios.post('http://localhost:4004/configureMercadoPago', { accessToken })
+          .then(() => {
+            console.log('MercadoPago configured successfully on the backend.');
+          })
+          .catch((error) => {
+            console.error('Error configuring MercadoPago on the backend:', error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }, [user.username]);
 
   useEffect(() => { 
     loadItems();
@@ -53,7 +73,7 @@ export const Dashboard = () => {
   
     try {
       const response = await axios.get(`http://localhost:4004/user/${user.username}`);
-      const userId = response.data._id; // Obtém o _id do usuário
+      const userId = response.data._id;
   
       await axios.post(`http://localhost:4004/createitem/${userId}`, {
         code: namecode,
@@ -80,34 +100,6 @@ export const Dashboard = () => {
       console.error(error);
     }
   };
-  
-  const handleSubscription = async () => {
-    try {
-      const subscription = await axios.get('http://localhost:4004/subscription');
-      // Verifique se a resposta possui o campo init_point
-      if (subscription.data.init_point) {
-        // Redirecione a página para init_point
-        setStatus(true);
-        window.location.href = subscription.data.init_point;
-      } else {
-        console.error('Resposta inválida da API de inscrição');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-/*
-  const subscheck = async () => {
-    try{
-      const response = await axios.get(`http://localhost:4004/user/${user.username}`);
-      const email = response.data.email; // Obtém o email do usuário
-      const subscription = await axios.get(`https://api.mercadopago.com/preapproval/${email}`);
-      subscription ? console.log(subscription) : console.log("Não foi encontrado assinatura");
-    }catch(err){
-      console.error(err)
-    }
-  }
-  */
 
   const handleDelete = async (itemId) => {
     try {
@@ -330,13 +322,21 @@ export const Dashboard = () => {
               value={editedUser.cep}
               onChange={(e) => handleEditUserFieldChange('cep', e.target.value)}
             />
-            <Label>Keymercadopago:</Label>
+            <Label>Public Key:</Label>
             <Input
               type="text"
-              name="keymercadopago"
-              placeholder="Edit Keymercadopago"
-              value={editedUser.keymercadopago}
-              onChange={(e) => handleEditUserFieldChange('keymercadopago', e.target.value)}
+              name="publicKey"
+              placeholder="Edit Public Key"
+              value={editedUser.publicKey}
+              onChange={(e) => handleEditUserFieldChange('publicKey', e.target.value)}
+            />
+            <Label>Access Token:</Label>
+            <Input
+              type="text"
+              name="accessToken"
+              placeholder="Edit Access Token"
+              value={editedUser.accessToken}
+              onChange={(e) => handleEditUserFieldChange('accessToken', e.target.value)}
             />
             
             <Button onClick={handleSaveUser}>Save User</Button>
@@ -353,16 +353,6 @@ export const Dashboard = () => {
         ) : null}
       </CardCreate>
 
-      <CardCreate className='Card'>
-        <HTwo >Premium</HTwo>
-        <Button onClick={handleSubscription}>Clicar</Button>
-        {status ? 
-        <Button className='premium'>Você é PREMIUM!</Button>
-        : ""
-        }
-      </CardCreate>
-
-      
     </Container>
   );
 };

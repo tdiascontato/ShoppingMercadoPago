@@ -20,12 +20,11 @@ export const Item = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [id]); // Adicione id como uma dependência
+  }, [id]);
 
   useEffect(() => {
-    // Carregar o item quando o componente for montado
     loadItem();
-  }, [loadItem]); // Passando loadItem como dependência
+  }, [loadItem]);
 
   const createPreference = async (item) => {
     try {

@@ -7,35 +7,28 @@ const connectDB = require('./database.js');
 const ItemController = require('./controllers/ItemController.js');
 const UserController = require("./controllers/UserController");
 const LoginController = require("./controllers/LoginController");
-const PaymentController = require("./services/PaymentController.js");
-const PaymentService = require("./services/PaymentService.js");
-const PaymentInstance = new PaymentController(new PaymentService());
+
 connectDB();
 
 app.use(express.json());
 app.use(cors());
 
-// Chave DE ACESSO vendedor
-mercadopago.configure({
-    access_token: process.env.ACCESS_TOKEN,
-});
+app.post("/configureMercadoPago", (req, res) => {
+  const accessToken = req.body.accessToken;
 
+  mercadopago.configure({
+    access_token: accessToken,
+  });
+
+  res.sendStatus(200);
+});
 // Routes
 app.put("/updateuser/:id", UserController.editUser);
 app.put("/updateitem/:id", ItemController.update);
 app.delete("/deleteitem/:id", ItemController.destroy);
-app.get('/api/environment', (req, res) => {
-  const envVariables = {
-    SECRETKEY: process.env.SECRETKEY,
-  };
-  res.json(envVariables);
-});
 app.get("/user/:username", UserController.getUserByUsername);
 app.get("/searchItem/:id", ItemController.searchItem);
 app.get("/loaditems/", ItemController.index);
-app.get("/subscription", function (req, res) {
-  PaymentInstance.getSubscriptionLink(req, res);
-});
 app.post("/login", LoginController.login);
 app.post("/cadastro", UserController.createUser);
 app.post("/createitem/:userId", ItemController.create);

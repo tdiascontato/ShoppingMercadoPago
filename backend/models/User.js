@@ -11,8 +11,8 @@ const userSchema = new mongoose.Schema({
   bairro: String,
   cidade: String,
   cep: String,
-  keymercadopago: String,
-  premium: Boolean
+  publicKey: String,
+  accessToken: String,
 }); 
 
 module.exports = mongoose.model("User", userSchema);
