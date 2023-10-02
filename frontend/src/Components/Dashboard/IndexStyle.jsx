@@ -84,6 +84,9 @@ export const Button = styled.button`
         transition: 1s ease;
     } 
     &.Logout{
+        background-color: #5aa5b0;
+    }
+    &.Delete{
         background-color: #dc0e0e;
     }
     &.premium{

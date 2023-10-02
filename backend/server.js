@@ -25,6 +25,7 @@ app.post("/configureMercadoPago", (req, res) => {
 // Routes
 app.put("/updateuser/:id", UserController.editUser);
 app.put("/updateitem/:id", ItemController.update);
+app.delete("/deleteuser/:username", UserController.deleteUser);
 app.delete("/deleteitem/:id", ItemController.destroy);
 app.get("/user/:username", UserController.getUserByUsername);
 app.get("/searchItem/:id", ItemController.searchItem);

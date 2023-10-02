@@ -123,8 +123,8 @@ export const Dashboard = () => {
         code: editedCode,
         price: editedPrice,
       });
-      setEditingItemId(null); // Sai do modo de edição após a conclusão
-      loadItems();// Recarregar os itens após a edição
+      setEditingItemId(null);
+      loadItems();
     } catch (error) {
       console.error('Erro ao salvar as alterações:', error);
     }
@@ -141,17 +141,37 @@ export const Dashboard = () => {
     }));
   };
   
+const handleSaveUser = async () => {
+  try {
+    await axios.put(`http://localhost:4004/updateuser/${user.username}`, {
+      username: editedUser.username,
+      email: editedUser.email,
+      celular: editedUser.celular,
+      senha: editedUser.senha,
+      facebook: editedUser.facebook,
+      instagram: editedUser.instagram,
+      endereco: editedUser.endereco,
+      bairro: editedUser.bairro,
+      cidade: editedUser.cidade,
+      cep: editedUser.cep,
+      publicKey: editedUser.publicKey,
+      accessToken: editedUser.accessToken,
+    });
+    setEditSuccess(true);
+  } catch (error) {
+    console.error('Error updating user:', error);
+  }
+};
+
   
-  const handleSaveUser = async () => {
+  const deleteUser = async () => {
     try {
-      const response = await axios.put(`http://localhost:4004/updateuser/${user.username}`, editedUser);
-      console.log(response.data);
-      setEditSuccess(true);
+      await axios.delete(`http://localhost:4004/deleteuser/${user.username}`);
+      logOut();
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error('Erro ao excluir usuário:', error);
     }
   };
-  
 
   //logout
   const logOut = () => {
@@ -231,9 +251,14 @@ export const Dashboard = () => {
           </Ul>
         )}
       
-      <Button onClick={logOut} className='Logout'>
-        Log Out
-      </Button>
+        <Button onClick={logOut} className='Logout'>
+          Log Out
+        </Button>
+        
+        <Button onClick={deleteUser} className='Delete'>
+          Deletar Conta
+        </Button>
+      
       </CardCreate>
 
       <CardCreate className='Card'>

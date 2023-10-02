@@ -1,12 +1,14 @@
-const axios = require('axios');
 const bcrypt = require('bcrypt');
+const Item = require("../models/Item");
 const User = require("../models/User");
 
 exports.createUser = async (req, res) => {
   try {
     const { username, email, celular, senha, facebook, instagram, endereco, bairro,
-      cidade, cep, publicKey, accessToken = true} = req.body;
+      cidade, cep, publicKey, accessToken} = req.body;
     const hashedPassword = await bcrypt.hash(senha, 10);
+    const hashedPublicKey = await bcrypt.hash(publicKey, 10);
+    const hashedAccessToken = await bcrypt.hash(accessToken, 10);
 
     const newUser = new User({
       username,
@@ -19,8 +21,8 @@ exports.createUser = async (req, res) => {
       bairro,
       cidade,
       cep,
-      publicKey,
-      accessToken
+      publicKey: hashedPublicKey,
+      accessToken: hashedAccessToken,
     });
 
     await newUser.save();
@@ -49,9 +51,22 @@ exports.getUserByUsername = async (req, res) => {//Rota para  isso?
 
 exports.editUser = async (req, res) => {
   try {
-    const { userid } = req.params;
-    const { username: newUsername, email, celular, senha, facebook, instagram, endereco, bairro, cidade, cep, publicKey, accessToken } = req.body;
-    const user = await User.findOne({ userid });
+    const { usernome } = req.params;
+    const {
+      username: newUsername,
+      email,
+      celular,
+      senha,
+      facebook,
+      instagram,
+      endereco,
+      bairro,
+      cidade,
+      cep,
+      publicKey,
+      accessToken,
+    } = req.body;
+    const user = await User.findOne({ usernome });
 
     if (!user) {
       return res.status(404).json({ Error: 'Usuário não encontrado.' });
@@ -89,15 +104,42 @@ exports.editUser = async (req, res) => {
       user.cep = cep;
     }
     if (publicKey) {
-      user.publicKey = publicKey;
+      const hashedPublicKey = await bcrypt.hash(publicKey, 10);
+      user.publicKey = hashedPublicKey;
     }
     if (accessToken) {
-      user.accessToken = accessToken;
+      const hashedAccessToken = await bcrypt.hash(accessToken, 10);
+      user.accessToken = hashedAccessToken;
     }
 
     await user.save();
 
     return res.status(200).json({ Message: 'Usuário atualizado com sucesso.' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ Error: 'Internal server error.' });
+  }
+};
+
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    // Encontre o usuário pelo nome de usuário
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ Error: 'Usuário não encontrado.' });
+    }
+
+    // Exclua os itens associados ao usuário
+    await Item.deleteMany({ createdBy: user._id });
+
+    // Use user.deleteOne() para excluir o usuário
+    await user.deleteOne();
+
+    return res.status(200).json({ Message: 'Usuário e itens excluídos com sucesso.' });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ Error: 'Internal server error.' });
