@@ -23,7 +23,7 @@ app.post("/configureMercadoPago", (req, res) => {
   res.sendStatus(200);
 });
 // Routes
-app.put("/updateuser/:id", UserController.editUser);
+app.put("/updateuser/:username", UserController.editUser);
 app.put("/updateitem/:id", ItemController.update);
 app.delete("/deleteuser/:username", UserController.deleteUser);
 app.delete("/deleteitem/:id", ItemController.destroy);

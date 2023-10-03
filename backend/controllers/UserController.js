@@ -51,7 +51,7 @@ exports.getUserByUsername = async (req, res) => {//Rota para  isso?
 
 exports.editUser = async (req, res) => {
   try {
-    const { usernome } = req.params;
+    const { username } = req.params;
     const {
       username: newUsername,
       email,
@@ -66,7 +66,7 @@ exports.editUser = async (req, res) => {
       publicKey,
       accessToken,
     } = req.body;
-    const user = await User.findOne({ usernome });
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(404).json({ Error: 'Usuário não encontrado.' });
