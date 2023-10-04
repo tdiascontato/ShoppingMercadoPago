@@ -1,3 +1,4 @@
+const images = require("../configs/multer");
 const Item = require("../models/Item");
 const User = require("../models/User");
 const mongoose = require("mongoose");
@@ -34,14 +35,25 @@ class ItemController {
   async create(req, res) {
     try {
       const { code, price } = req.body;
-      const createdBy = req.params.userId; // Obtém o userId a partir dos parâmetros da URL
-      // Verifica se o usuário existe
+      const createdBy = req.params.userId;
       const user = await User.findById(createdBy);
+      
       if (!user) {
         return res.status(404).json({ Error: 'Usuário não encontrado.' });
       }
-      const item = await Item.create({ code, price, createdBy });
+
+      // Verifique se um arquivo foi enviado
+      if (!req.file) {
+        return res.status(400).json({ Error: 'Nenhuma imagem foi enviada.' });
+      }
+
+      // Use req.file.filename para obter o nome da imagem
+      const imageName = req.file.filename;
+
+      const item = await Item.create({ code, price, image: imageName, createdBy });
+
       console.log('Item created:', item);
+
       return res.status(201).json(item);
     } catch (err) {
       console.error(err);

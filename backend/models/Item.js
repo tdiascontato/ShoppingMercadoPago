@@ -11,9 +11,13 @@ const itemSchema = new Schema({
     type: Number,
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Referência ao modelo User
+    ref: 'User',
   },
 }, {
   timestamps: true,

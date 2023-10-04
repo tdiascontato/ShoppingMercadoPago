@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import { Container, CardItem, CardProduct, Img, HThree, Pe, Button } from './IndexStyle';
-import img from '../../img/613480.jpg';
 
 export const Item = () => {
   // Chave pública -> pegar const cadastro?
@@ -56,7 +55,7 @@ export const Item = () => {
       {item && (
         <CardProduct>
           <CardItem key={item._id}>
-            <Img src={img} alt="Product Image" />
+          <Img src={`http://localhost:4004/images/${item.image}`} alt="Product Image" />
             <HThree>{item.code}</HThree>
             <Pe className="price">{`R$${item.price}`}</Pe>
             <Button onClick={() => handleBuy(item)}>Comprar com MercadoPago</Button>

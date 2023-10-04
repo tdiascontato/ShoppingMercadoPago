@@ -17,7 +17,6 @@ import {
   SecondButton,
   Pe,
 } from './IndexStyle';
-import img from '../../img/613480.jpg';
 
 export const Dashboard = () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -33,7 +32,7 @@ export const Dashboard = () => {
   const [items, setItems] = useState([]);
   const [namecode, setNamecode] = useState('');
   const [nameprice, setNameprice] = useState('');
-  const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const [file, setFile] = useState(null);
   const [showEditDelete, setShowEditDelete] = useState(false);
   const [editedUser, setEditedUser] = useState({
     username: '',
@@ -90,21 +89,21 @@ export const Dashboard = () => {
     try {
       const response = await axios.get(`http://localhost:4004/user/${user.username}`);
       const userId = response.data._id;
-  
+
       const formData = new FormData();
       formData.append('code', namecode);
       formData.append('price', nameprice);
-      formData.append('image', selectedImageFile); // selectedImageFile é o arquivo selecionado
-  
+      formData.append('file', file);
+
       await axios.post(`http://localhost:4004/createitem/${userId}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Define o tipo de conteúdo como multipart/form-data
+          'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       setNamecode('');
       setNameprice('');
-      setSelectedImageFile(null); // Limpa o arquivo selecionado
+      setFile(null);
       loadItems();
     } catch (error) {
       console.error(error);
@@ -210,7 +209,7 @@ export const Dashboard = () => {
         <Form onSubmit={handleSubmit}>
           <HTwo>Criar Itens</HTwo>
 
-          <input type='file' name='image' />{/*Salvar imagem dos items*/}
+          <input type='file' name='image' onChange={(e) => setFile(e.target.files[0])} />{/*Salvar imagem dos items*/}
           
           <Label>Código:</Label>
           <Input
@@ -263,9 +262,8 @@ export const Dashboard = () => {
                     <Button onClick={() => handleSaveEdit(item)}>Salvar</Button>
                   </>
                 ) : (
-                  // Modo de visualização
                   <CardItem>
-                    <Img src={img} alt="Product Image" />
+                    <Img src={`http://localhost:4004/images/${item.image}`} alt="Product Image" />
                     <HThree>{item.code}</HThree>
                     <Pe className="price">{`R$${item.price}`}</Pe>
                     <SecondButton onClick={() => handleEdit(item)}>Editar</SecondButton>

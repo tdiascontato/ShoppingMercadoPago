@@ -2,16 +2,19 @@ require("dotenv/config");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const path = require("path");
 const mercadopago = require("mercadopago");
 const connectDB = require('./database.js');
 const ItemController = require('./controllers/ItemController.js');
 const UserController = require("./controllers/UserController");
 const LoginController = require("./controllers/LoginController");
+const images = require("./configs/multer.js");
 
 connectDB();
 
 app.use(express.json());
 app.use(cors());
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.post("/configureMercadoPago", (req, res) => {
   const accessToken = req.body.accessToken;
@@ -32,7 +35,7 @@ app.get("/searchItem/:id", ItemController.searchItem);
 app.get("/loaditems/", ItemController.index);
 app.post("/login", LoginController.login);
 app.post("/cadastro", UserController.createUser);
-app.post("/createitem/:userId", ItemController.create);
+app.post("/createitem/:userId", images.single("file"), ItemController.create);
 app.post("/createorder", (req, res) => {
     // Mandando para API
     let preference = {
