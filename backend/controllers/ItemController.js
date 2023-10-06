@@ -1,7 +1,8 @@
-const images = require("../configs/multer");
+/*const fs = require('fs');
+const path = require('path');*/
+const mongoose = require("mongoose");
 const Item = require("../models/Item");
 const User = require("../models/User");
-const mongoose = require("mongoose");
 
 class ItemController {
 
@@ -79,6 +80,27 @@ class ItemController {
       return res.status(200).json({ Message: 'Item atualizado com sucesso.' });
     } catch (err) {
       console.error(err);
+      return res.status(500).json({ Error: 'Internal server error.' });
+    }
+  }
+
+  async deleteImage(req, res) {
+    try {
+      const { filename } = req.params;
+  
+      // Define o caminho da imagem
+      const imagePath = path.join(__dirname, '../images', filename);
+  
+      // Verifique se o arquivo existe
+      if (fs.existsSync(imagePath)) {
+        // Exclua a imagem
+        fs.unlinkSync(imagePath);
+        return res.status(200).json({ Message: 'Imagem excluída com sucesso.' });
+      }
+  
+      return res.status(404).json({ Error: 'Imagem não encontrada.' });
+    } catch (error) {
+      console.error(error);
       return res.status(500).json({ Error: 'Internal server error.' });
     }
   }

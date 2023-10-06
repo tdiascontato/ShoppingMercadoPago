@@ -28,11 +28,11 @@ export const Dashboard = () => {
   const [editedCode, setEditedCode] = useState('');
   const [editedPrice, setEditedPrice] = useState('');
   const [editSuccess, setEditSuccess] = useState(false);
+  const [file, setFile] = useState(null);
   const [isEditingUser, setIsEditingUser] = useState(false);
   const [items, setItems] = useState([]);
   const [namecode, setNamecode] = useState('');
   const [nameprice, setNameprice] = useState('');
-  const [file, setFile] = useState(null);
   const [showEditDelete, setShowEditDelete] = useState(false);
   const [editedUser, setEditedUser] = useState({
     username: '',
@@ -138,9 +138,9 @@ export const Dashboard = () => {
     setEditedPrice(item.price);
   };
 
-  const handleSaveEdit = async (item) => {
+  const handleUpdateItem = async (item) => {
     try {
-      await axios.put(`http://localhost:4004/updateitem/${item._id}`, {
+       await axios.put(`http://localhost:4004/updateitem/${item._id}`, {
         code: editedCode,
         price: editedPrice,
       });
@@ -209,7 +209,7 @@ export const Dashboard = () => {
         <Form onSubmit={handleSubmit}>
           <HTwo>Criar Itens</HTwo>
 
-          <input type='file' name='image' onChange={(e) => setFile(e.target.files[0])} />{/*Salvar imagem dos items*/}
+          <input type='file' name='image' onChange={(e) => setFile(e.target.files[0])} />
           
           <Label>Código:</Label>
           <Input
@@ -247,6 +247,8 @@ export const Dashboard = () => {
                 {editingItemId === item._id ? (
                   // Modo de edição
                   <>
+                    <Label>Imagem:</Label>
+                    <input type='file' name='image' onChange={(e) => setFile(e.target.files[0])} />
                     <Label>Código:</Label>
                     <Input
                       type="text"
@@ -259,7 +261,7 @@ export const Dashboard = () => {
                       value={editedPrice}
                       onChange={(e) => setEditedPrice(e.target.value)}
                     />
-                    <Button onClick={() => handleSaveEdit(item)}>Salvar</Button>
+                    <Button onClick={() => handleUpdateItem(item)}>Salvar</Button>
                   </>
                 ) : (
                   <CardItem>
